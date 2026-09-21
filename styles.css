@@ -134,6 +134,15 @@ a { color: inherit; }
 .lede { font-size: 1.18rem; color: var(--muted); max-width: 34rem; }
 .hero-cta { display: flex; gap: 0.9rem; flex-wrap: wrap; margin: 1.8rem 0 1rem; }
 .hero-note { font-family: var(--font-mono); font-size: 0.82rem; color: var(--muted); margin: 0; }
+.hero-proof {
+  display: flex; align-items: center; gap: 0.7rem; flex-wrap: wrap;
+  font-family: var(--font-mono); font-size: 0.86rem; color: var(--muted); margin: 0 0 1.6rem;
+}
+.proof-badge {
+  background: rgba(7, 18, 32, 0.92); color: #34d399; border-radius: 9px;
+  padding: 0.3rem 0.65rem; font-weight: 500;
+  box-shadow: 0 8px 20px -8px rgba(7, 30, 50, 0.5);
+}
 
 /* Terminal — dark glass, the high-tech anchor */
 .terminal {
