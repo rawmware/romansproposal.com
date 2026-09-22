@@ -3,7 +3,7 @@
 **Live:** https://romansproposal.com · **Deploys:** Vercel (auto-deploys from `main`)
 
 A clean, professional marketing site for Roman's software & AI services business —
-websites, AI assistants, and automations for real estate teams, law firms, and local
+applications, AI assistants, and automations for real estate teams, law firms, and local
 businesses. The centerpiece is an interactive **proposal builder**: visitors answer
 three questions and get an instant itemized estimate, then send it as a pre-filled
 email inquiry.
@@ -27,7 +27,7 @@ Everything business-critical lives in one `CONFIG` object at the top of `app.js`
 ```js
 var CONFIG = {
   contactEmail: "hello@romansproposal.com", // <-- change to the real inbox
-  prices: { website: { label: "New website", from: 1200 }, ... },
+  prices: { website: { label: "New application", from: 1200 }, ... },
   ...
 };
 ```

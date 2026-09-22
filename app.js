@@ -6,7 +6,7 @@
   var CONFIG = {
     contactEmail: "roman.proposal@gmail.com", // Roman's inbox
     prices: {
-      website:  { label: "New website",                 from: 1200 },
+      website:  { label: "New application",             from: 1200 },
       "ai-chat": { label: "AI chat assistant",          from: 900  },
       "lead-auto": { label: "Lead follow-up automation", from: 700 },
       booking:  { label: "Booking & intake system",     from: 600  },
