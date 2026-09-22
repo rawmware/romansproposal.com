@@ -284,6 +284,25 @@ a { color: inherit; }
 .faq summary::marker { color: var(--accent); }
 .faq p { color: var(--muted); margin: 0.7rem 0 0; font-size: 0.96rem; }
 
+/* Webinar — paid live class */
+.webinar-grid { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 1.15rem; margin-top: 2.5rem; align-items: start; }
+.webinar-curriculum { padding: 2rem; }
+.webinar-curriculum h3 { font-size: 1.25rem; }
+.webinar-curriculum ul { list-style: none; margin: 0; padding: 0; }
+.webinar-curriculum li { padding: 0.55rem 0 0.55rem 1.6rem; position: relative; font-size: 0.97rem; color: var(--text); }
+.webinar-curriculum li::before { content: "→"; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+.webinar-curriculum li strong { color: var(--ink); }
+.webinar-meta { margin: 1.2rem 0 0; font-family: var(--font-mono); font-size: 0.85rem; color: var(--muted); }
+.webinar-form { padding: 2rem; display: grid; gap: 1rem; }
+.webinar-form h3 { font-size: 1.25rem; margin-bottom: 0; }
+.webinar-note { color: var(--muted); font-size: 0.95rem; margin: 0; }
+.webinar-form label { display: grid; gap: 0.4rem; font-weight: 600; font-size: 0.93rem; color: var(--ink); }
+.webinar-form input {
+  font: inherit; font-weight: 400; padding: 0.85rem 1rem; border: 1px solid var(--line); border-radius: 14px;
+  background: rgba(255, 255, 255, 0.75); color: var(--text); width: 100%;
+}
+.webinar-form input:focus { outline: 2px solid var(--accent-2); border-color: var(--accent); }
+
 /* Contact */
 .contact-form { margin-top: 2rem; display: grid; gap: 1rem; padding: 2rem; }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
@@ -329,7 +348,7 @@ a { color: inherit; }
   .site-nav a { padding: 0.7rem 0; border-bottom: 1px solid var(--line); color: var(--ink); }
   .nav-toggle { display: block; }
   .header-actions .btn { display: none; }
-  .cards, .steps, .industry-grid, .choice-grid, .form-row { grid-template-columns: 1fr; }
+  .cards, .steps, .industry-grid, .choice-grid, .form-row, .webinar-grid { grid-template-columns: 1fr; }
   .strip-grid { grid-template-columns: 1fr; gap: 1rem; }
   .builder-panels { padding: 1.4rem; }
   .builder-tab { font-size: 0.78rem; }
