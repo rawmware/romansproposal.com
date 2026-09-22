@@ -242,6 +242,23 @@
     });
   }
 
+  /* ---------- Webinar signup → email ---------- */
+  var wform = $("#webinar-form");
+  if (wform) {
+    wform.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var name = wform.name.value.trim(),
+          email = wform.email.value.trim();
+      var body = encodeURIComponent(
+        "Name: " + name + "\n" +
+        "Email: " + email + "\n\n" +
+        "Please reserve my seat for Introduction to AI."
+      );
+      window.location.href = "mailto:" + CONFIG.contactEmail +
+        "?subject=" + encodeURIComponent("Webinar seat request — Introduction to AI") + "&body=" + body;
+    });
+  }
+
   /* ---------- Misc ---------- */
   var emailLink = $("#contact-email");
   if (emailLink) {
