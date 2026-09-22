@@ -4,9 +4,9 @@
   "use strict";
 
   var CONFIG = {
-    contactEmail: "roman.proposal@gmail.com", // Roman's inbox
+    contactEmail: "hello@romansproposal.com", // <-- change to your real email
     prices: {
-      website:  { label: "New application",             from: 1200 },
+      website:  { label: "New website",                 from: 1200 },
       "ai-chat": { label: "AI chat assistant",          from: 900  },
       "lead-auto": { label: "Lead follow-up automation", from: 700 },
       booking:  { label: "Booking & intake system",     from: 600  },
@@ -189,15 +189,13 @@
     };
     var timeLabels = { asap: "ASAP", month: "2–4 weeks", exploring: "Exploring" };
 
-    function money(n) { return "$" + n.toLocaleString("en-US"); }
-
     function renderProposal() {
       var out = $("#proposal-output");
-      var total = 0, lines = "";
+      var lines = "";
       state.needs.forEach(function (need) {
         var p = CONFIG.prices[need];
-        total += p.from;
-        lines += '<div class="proposal-line"><span>' + p.label + '</span><span>from ' + money(p.from) + '</span></div>';
+        if (!p) return;
+        lines += '<div class="proposal-line"><span>' + p.label + '</span><span>Included</span></div>';
       });
       var timeline = CONFIG.timelineByScope[0].text;
       CONFIG.timelineByScope.forEach(function (t) {
@@ -207,14 +205,13 @@
       out.innerHTML =
         '<div class="proposal-line"><span>Business type</span><span>' + bizLabels[state.biz] + '</span></div>' +
         lines +
-        '<div class="proposal-total"><span>Estimated investment</span><span>from ' + money(total) + '</span></div>' +
+        '<div class="proposal-total"><span>Pricing</span><span>Donation-based</span></div>' +
         '<p class="proposal-meta">Typical timeline: <strong>' + timeline + '</strong> &middot; Preferred start: ' + timeLabels[state.time] + '<br>' +
-        'Fixed quote confirmed before any work begins. You own 100% of the code.</p>' + rush;
+        'No upfront pricing — we\'ll suggest a fair price together only if you decide to become a client. You own 100% of the code.</p>' + rush;
 
-      var body = "Hi Roman,%0D%0A%0D%0AHere's my proposal-builder estimate:%0D%0A" +
+      var body = "Hi Roman,%0D%0A%0D%0AHere's my proposal-builder scope:%0D%0A" +
         "- Business: " + encodeURIComponent(bizLabels[state.biz]) + "%0D%0A" +
-        state.needs.map(function (n) { return "- " + encodeURIComponent(CONFIG.prices[n].label) + " (from " + money(CONFIG.prices[n].from) + ")"; }).join("%0D%0A") + "%0D%0A" +
-        "- Estimated total: from " + money(total) + "%0D%0A" +
+        state.needs.map(function (n) { return "- " + encodeURIComponent(CONFIG.prices[n] ? CONFIG.prices[n].label : n); }).join("%0D%0A") + "%0D%0A" +
         "- Timeline: " + encodeURIComponent(timeline) + "%0D%0A" +
         "- Start: " + encodeURIComponent(timeLabels[state.time]) + "%0D%0A%0D%0A" +
         "Name:%0D%0ABusiness:%0D%0APhone:%0D%0A";
@@ -239,23 +236,6 @@
       );
       window.location.href = "mailto:" + CONFIG.contactEmail +
         "?subject=" + encodeURIComponent("New inquiry from " + (business || name)) + "&body=" + body;
-    });
-  }
-
-  /* ---------- Webinar signup → email ---------- */
-  var wform = $("#webinar-form");
-  if (wform) {
-    wform.addEventListener("submit", function (e) {
-      e.preventDefault();
-      var name = wform.name.value.trim(),
-          email = wform.email.value.trim();
-      var body = encodeURIComponent(
-        "Name: " + name + "\n" +
-        "Email: " + email + "\n\n" +
-        "Please reserve my seat for Introduction to AI."
-      );
-      window.location.href = "mailto:" + CONFIG.contactEmail +
-        "?subject=" + encodeURIComponent("Webinar seat request — Introduction to AI") + "&body=" + body;
     });
   }
 
