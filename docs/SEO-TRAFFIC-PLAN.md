@@ -1,6 +1,6 @@
 # SEO and traffic launch plan
 
-Prepared October 2, 2026. These edits are local until deployed.
+Prepared October 2, 2026. SEO release 96ff901 was published to production and verified on October 2, 2026.
 
 ## Findings
 
@@ -10,14 +10,14 @@ Prepared October 2, 2026. These edits are local until deployed.
 - Contact JavaScript overwrote the displayed Gmail address with a placeholder inbox.
 - Content marked reveal was hidden without JavaScript. It is now visible by default.
 - Existing local changes include an application catalog. Preserve and review those separately when publishing.
-- The connected Vercel team returned no projects, so production deployment was not established.
+- The Vercel connector returned no projects and had a parameter mismatch. The user supplied the dashboard URL; browser inspection confirmed the Git connection. A Git branch preview was verified before fast-forwarding main.
 
-## Publish and verify
+## Publication checks and remaining indexing work
 
-1. Identify the Vercel account/project serving www.romansproposal.com and deploy a preview of this website directory.
-2. Check homepage and guide on desktop and mobile, proposal builder, email recipients, and existing application catalog.
-3. Publish the verified deployment. Confirm both canonical pages, robots.txt, and sitemap.xml return 200, and unknown paths return 404.
-4. In a verified Google Search Console domain property, submit https://www.romansproposal.com/sitemap.xml. Inspect both URLs and request indexing if eligible. Verification requires the owner's account or DNS access; do not invent a verification token.
+1. Completed: verified preview homepage, mobile guide layout, and proposal-builder email destination.
+2. Completed: pushed SEO-only release to main without including the existing local application-catalog changes.
+3. Completed: both canonical pages, robots.txt, and sitemap.xml return 200; an unknown URL returns 404; public contact JavaScript uses the displayed Gmail address.
+4. In a verified Google Search Console domain property, submit https://www.romansproposal.com/sitemap.xml. Inspect both URLs and request indexing if eligible. The available browser is not signed in to Search Console. Verification requires the owner's account or DNS access; do not invent a verification token.
 
 ## First 30 days
 
