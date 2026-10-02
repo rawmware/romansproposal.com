@@ -4,7 +4,7 @@
   "use strict";
 
   var CONFIG = {
-    contactEmail: "hello@romansproposal.com", // <-- change to your real email
+    contactEmail: "roman.proposal@gmail.com",
     prices: {
       website:  { label: "New website",                 from: 1200 },
       "ai-chat": { label: "AI chat assistant",          from: 900  },

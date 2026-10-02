@@ -272,7 +272,7 @@ a { color: inherit; }
 .footer-inner p { margin: 0; }
 
 /* Reveal animation */
-.reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal { opacity: 1; transform: none; transition: opacity 0.6s ease, transform 0.6s ease; }
 .reveal.is-visible { opacity: 1; transform: none; }
 
 /* Responsive */
