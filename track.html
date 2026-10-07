@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Track Your Order | Roman's Proposal</title>
+  <meta name="description" content="Check the status and tracking number of your Roman's Proposal order." />
+  <meta name="theme-color" content="#0a1a33" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">R</span><span class="brand-text">Roman's <em>Proposal</em></span></a>
+    </div>
+  </header>
+  <main class="page">
+    <div class="wrap narrow">
+      <h1>Track your order</h1>
+      <p>Enter the order number from your confirmation (it looks like <strong>RP-7K2M9QXA</strong>).</p>
+      <form class="track-form" id="track-form">
+        <label class="sr-only" for="order-input">Order number</label>
+        <input id="order-input" placeholder="RP-XXXXXXXX" maxlength="11" autocomplete="off" />
+        <button class="btn btn-primary" type="submit">Track</button>
+      </form>
+      <div class="panel" id="result" hidden aria-live="polite"></div>
+      <p style="margin-top:24px">Something wrong with your order? Email <a href="mailto:roman.proposal@gmail.com">roman.proposal@gmail.com</a> with your order number.</p>
+    </div>
+  </main>
+  <script>
+    (function () {
+      var form = document.getElementById("track-form"), input = document.getElementById("order-input"), out = document.getElementById("result");
+      var esc = function (s) { return String(s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); };
+      function show(html) { out.innerHTML = html; out.hidden = false; }
+      function lookup(n) {
+        show("<p>Checking…</p>");
+        fetch("/api/order?n=" + encodeURIComponent(n))
+          .then(function (r) { return r.json(); })
+          .then(function (d) {
+            if (d.error) return show("<p>" + esc(d.error) + "</p>");
+            if (!d.found) return show("<p>" + esc(d.message) + "</p>");
+            show("<h2 style=\"margin-top:0\">" + esc(d.statusText) + "</h2>" +
+              "<p>Order <strong>" + esc(d.order) + "</strong></p>" +
+              (d.trackingNumber
+                ? "<p>Tracking number: <strong>" + esc(d.trackingNumber) + "</strong>" + (d.carrier ? " (" + esc(d.carrier) + ")" : "") + "</p>" +
+                  "<p><a class=\"btn btn-dark\" href=\"" + esc(d.trackingUrl) + "\" target=\"_blank\" rel=\"noopener\">See tracking updates</a></p>"
+                : "<p>Your tracking number will show here as soon as it ships.</p>"));
+          })
+          .catch(function () { show("<p>Couldn't check right now. Try again in a minute.</p>"); });
+      }
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        var n = input.value.trim().toUpperCase();
+        if (n && n.indexOf("RP-") !== 0) n = "RP-" + n;
+        input.value = n;
+        lookup(n);
+      });
+      var q = new URLSearchParams(location.search).get("n");
+      if (q) { input.value = q.toUpperCase(); lookup(input.value); }
+    })();
+  </script>
+</body>
+</html>

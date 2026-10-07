@@ -1,250 +1,359 @@
-/* Roman's Proposal — app.js
-   EDIT YOUR NUMBERS HERE: prices, contact email, timelines. Everything else just works. */
+/* Roman's Proposal — storefront.
+   Products come live from /api/products. Prices shown here are for display;
+   the server recalculates everything at checkout. */
 (function () {
   "use strict";
 
-  var CONFIG = {
-    contactEmail: "roman.proposal@gmail.com",
-    prices: {
-      website:  { label: "New website",                 from: 1200 },
-      "ai-chat": { label: "AI chat assistant",          from: 900  },
-      "lead-auto": { label: "Lead follow-up automation", from: 700 },
-      booking:  { label: "Booking & intake system",     from: 600  },
-      crm:      { label: "CRM integration",             from: 500  }
-    },
-    timelineByScope: [
-      { max: 1, text: "about 1 week" },
-      { max: 3, text: "about 2 weeks" },
-      { max: 99, text: "2–3 weeks" }
-    ],
-    rushNote: "Rush available — tell me your deadline and I'll confirm."
+  var $ = function (sel, ctx) { return (ctx || document).querySelector(sel); };
+  var money = function (cents) {
+    return (cents / 100).toLocaleString("en-US", { style: "currency", currency: "USD" });
+  };
+  var esc = function (s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  };
+  var track = function (name, data) { if (window.track) window.track(name, data); };
+
+  var state = {
+    products: [],
+    collections: [],
+    bundle: { minQty: 2, percentOff: 15 },
+    delivery: { min: 3, max: 8 },
+    category: "all",
+    sort: "featured",
+    current: null
   };
 
-  var $ = function (sel, ctx) { return (ctx || document).querySelector(sel); };
-  var $$ = function (sel, ctx) { return Array.prototype.slice.call((ctx || document).querySelectorAll(sel)); };
-  var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var bundlePrice = function (cents) { return Math.round(cents * (1 - state.bundle.percentOff / 100)); };
 
-  /* ---------- Mobile nav ---------- */
-  var navToggle = $("#nav-toggle"), nav = $("#site-nav");
-  if (navToggle && nav) {
-    navToggle.addEventListener("click", function () {
-      var open = nav.classList.toggle("is-open");
-      navToggle.setAttribute("aria-expanded", open ? "true" : "false");
-      navToggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
-    });
-    $$("a", nav).forEach(function (a) {
-      a.addEventListener("click", function () {
-        nav.classList.remove("is-open");
-        navToggle.setAttribute("aria-expanded", "false");
-      });
-    });
-    document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape") {
-        nav.classList.remove("is-open");
-        navToggle.setAttribute("aria-expanded", "false");
-      }
-    });
+  /* ---------- Toast ---------- */
+  var toastTimer;
+  function toast(msg) {
+    var t = $("#toast");
+    t.textContent = msg;
+    t.hidden = false;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { t.hidden = true; }, 2600);
   }
 
-  /* ---------- Reveal on scroll ---------- */
-  var revealEls = $$(".reveal");
-  if ("IntersectionObserver" in window && !reducedMotion) {
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        if (en.isIntersecting) { en.target.classList.add("is-visible"); io.unobserve(en.target); }
-      });
-    }, { threshold: 0.12 });
-    revealEls.forEach(function (el) { io.observe(el); });
-  } else {
-    revealEls.forEach(function (el) { el.classList.add("is-visible"); });
+  /* ---------- Bag (saved on this device) ---------- */
+  var BAG_KEY = "rp_bag_v1";
+  var bag = [];
+  try { bag = JSON.parse(localStorage.getItem(BAG_KEY) || "[]") || []; } catch (e) { bag = []; }
+  function saveBag() {
+    try { localStorage.setItem(BAG_KEY, JSON.stringify(bag)); } catch (e) { /* private mode */ }
+    renderBagCount();
+  }
+  var bagQty = function () { return bag.reduce(function (n, l) { return n + l.qty; }, 0); };
+  function renderBagCount() {
+    var n = bagQty(), el = $("#bag-count");
+    el.textContent = n;
+    el.hidden = n === 0;
+  }
+  function addToBag(line) {
+    var existing = bag.find(function (l) { return l.vid === line.vid; });
+    if (existing) existing.qty = Math.min(5, existing.qty + line.qty);
+    else bag.push(line);
+    saveBag();
   }
 
-  /* ---------- Hero terminal ---------- */
-  var term = $("#terminal-body");
-  var script = [
-    { t: "$ whoami", d: 700 },
-    { t: "roman — I build software for local business", cls: "dim", d: 900 },
-    { t: "$ deploy client-site", d: 700 },
-    { t: "✓ Live in 38s — loads in under a second", cls: "ok", d: 900 },
-    { t: "$ ai-assistant --train \"your business\"", d: 700 },
-    { t: "✓ Answering clients 24/7, booking while you sleep", cls: "ok", d: 900 },
-    { t: "$ automate leads --follow-up instant", d: 700 },
-    { t: "✓ 142 follow-ups sent. Zero leads lost.", cls: "ok", d: 1400 }
-  ];
-  function runTerminal() {
-    if (!term) return;
-    if (reducedMotion) {
-      term.innerHTML = script.map(function (s) {
-        return '<div class="' + (s.cls || (s.t[0] === "$" ? "cmd" : "")) + '">' + s.t + "</div>";
-      }).join("");
+  /* ---------- Catalog ---------- */
+  function loadCatalog() {
+    return fetch("/api/products")
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        state.products = data.products || [];
+        state.collections = data.collections || [];
+        if (data.bundle) state.bundle = data.bundle;
+        if (data.delivery) state.delivery = data.delivery;
+        renderChips();
+        renderGrid();
+      })
+      .catch(function () {
+        state.products = [];
+        renderGrid();
+      });
+  }
+
+  function renderChips() {
+    var present = {};
+    state.products.forEach(function (p) { present[p.category] = true; });
+    var chips = [{ key: "all", label: "All deals" }].concat(
+      state.collections.filter(function (c) { return present[c.key]; })
+    );
+    $("#chips").innerHTML = chips.map(function (c) {
+      return '<button class="chip" role="tab" type="button" data-cat="' + esc(c.key) + '" aria-selected="' +
+        (c.key === state.category) + '">' + esc(c.label) + "</button>";
+    }).join("");
+  }
+
+  function visibleProducts() {
+    var list = state.products.filter(function (p) { return state.category === "all" || p.category === state.category; });
+    if (state.sort === "price") list = list.slice().sort(function (a, b) { return a.priceCents - b.priceCents; });
+    return list;
+  }
+
+  function cardHTML(p) {
+    var hot = p.stock != null && p.stock < 60
+      ? '<span class="badge badge-hot">Only ' + p.stock + " left</span>"
+      : p.priceCents < 1500 ? '<span class="badge badge-hot">Under $15</span>' : "<span></span>";
+    return '<button class="card" type="button" data-id="' + esc(p.id) + '">' +
+      '<div class="badges">' + hot + '<span class="badge badge-code">#' + esc(p.code) + "</span></div>" +
+      '<img class="card-img" src="' + esc(p.image) + '" alt="" loading="lazy" decoding="async" width="400" height="400" />' +
+      '<div class="card-body">' +
+        '<span class="card-title">' + esc(p.title) + "</span>" +
+        '<span class="card-price">' + money(p.priceCents) + "</span>" +
+        '<span class="card-deal">2 for ' + money(bundlePrice(p.priceCents) * 2) + "</span>" +
+        '<span class="card-meta">Free US shipping</span>' +
+      "</div></button>";
+  }
+
+  function renderGrid() {
+    var list = visibleProducts();
+    var grid = $("#grid"), empty = $("#empty");
+    if (state.products.length === 0) {
+      grid.innerHTML = "";
+      empty.hidden = false;
       return;
     }
-    var i = 0;
-    function next() {
-      if (i >= script.length) { setTimeout(function () { term.innerHTML = ""; i = 0; next(); }, 2600); return; }
-      var s = script[i++];
-      var line = document.createElement("div");
-      line.className = (s.cls || (s.t.charAt(0) === "$" ? "cmd" : "")) + (s.t.charAt(0) === "$" ? " caret" : "");
-      term.appendChild(line);
-      var chars = s.t.split(""), c = 0;
-      var speed = s.t.charAt(0) === "$" ? 34 : 12;
-      (function type() {
-        if (c < chars.length) { line.textContent += chars[c++]; setTimeout(type, speed); }
-        else { line.classList.remove("caret"); setTimeout(next, s.d); }
-      })();
+    empty.hidden = true;
+    grid.innerHTML = list.map(cardHTML).join("");
+  }
+
+  $("#chips").addEventListener("click", function (e) {
+    var btn = e.target.closest("[data-cat]");
+    if (!btn) return;
+    state.category = btn.getAttribute("data-cat");
+    renderChips();
+    renderGrid();
+  });
+  $("#sort").addEventListener("change", function (e) { state.sort = e.target.value; renderGrid(); });
+  $("#grid").addEventListener("click", function (e) {
+    var card = e.target.closest("[data-id]");
+    if (card) openProduct(card.getAttribute("data-id"));
+  });
+
+  /* ---------- Item code search ---------- */
+  function findByCode(code) {
+    code = String(code || "").replace(/[^a-z0-9]/gi, "").toUpperCase();
+    return state.products.find(function (p) { return p.code === code; });
+  }
+  $("#code-search").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var input = $("#code-input"), msg = $("#code-msg");
+    var p = findByCode(input.value);
+    if (p) { msg.textContent = ""; openProduct(p.id); }
+    else msg.textContent = input.value ? "No item with that code right now. It may have sold out." : "Type the code from the video.";
+  });
+
+  /* ---------- Product sheet ---------- */
+  var sheet = $("#product-sheet");
+
+  function setUrl(params) {
+    try {
+      var url = new URL(window.location.href);
+      ["p", "i", "bag"].forEach(function (k) { url.searchParams.delete(k); });
+      Object.keys(params || {}).forEach(function (k) { url.searchParams.set(k, params[k]); });
+      history.replaceState(null, "", url.pathname + url.search);
+    } catch (e) { /* old browsers */ }
+  }
+
+  function openProduct(id) {
+    var listing = state.products.find(function (p) { return p.id === id; });
+    state.current = { id: id, product: null, vid: null, qty: 1 };
+    $("#ps-body").innerHTML = listing
+      ? '<div class="ps"><div class="gallery"><img src="' + esc(listing.image) + '" alt="" /></div>' +
+        "<div><h2 id=\"ps-title\">" + esc(listing.title) + '</h2><div class="ps-price"><strong>' + money(listing.priceCents) +
+        "</strong></div><p class=\"card-meta\">Loading options…</p></div></div>"
+      : '<p class="ps-error" id="ps-title">Loading…</p>';
+    if (!sheet.open) sheet.showModal();
+    setUrl({ p: id });
+
+    fetch("/api/product?id=" + encodeURIComponent(id))
+      .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, data: d }; }); })
+      .then(function (res) {
+        if (!state.current || state.current.id !== id) return;
+        if (!res.ok) throw new Error(res.data.error || "Unavailable");
+        var p = res.data;
+        state.current.product = p;
+        state.current.vid = p.variants[0].vid;
+        renderProduct();
+        track("ViewContent", { content_ids: [p.id], content_type: "product", content_name: p.title, value: p.fromPriceCents / 100, currency: "USD" });
+      })
+      .catch(function (err) {
+        if (!state.current || state.current.id !== id) return;
+        $("#ps-body").innerHTML = '<div class="ps-error"><h2 id="ps-title">' + esc(err.message || "This deal sold out.") +
+          '</h2><p>Plenty more cheap finds below.</p><button class="btn btn-dark" type="button" data-close>See all deals</button></div>';
+      });
+  }
+
+  function currentVariant() {
+    var c = state.current;
+    return c && c.product && c.product.variants.find(function (v) { return v.vid === c.vid; });
+  }
+
+  function renderProduct() {
+    var c = state.current, p = c.product, v = currentVariant();
+    var images = v && v.image && p.images.indexOf(v.image) === -1 ? [v.image].concat(p.images) : p.images;
+    var multi = p.variants.length > 1;
+    var low = v.stock != null && v.stock < 60 ? '<p class="ps-stock">Only ' + v.stock + " left in the US warehouse</p>" : "";
+    $("#ps-body").innerHTML =
+      '<div class="ps">' +
+        "<div>" +
+          '<div class="gallery">' + images.map(function (src) { return '<img src="' + esc(src) + '" alt="" loading="lazy" />'; }).join("") + "</div>" +
+          (images.length > 1 ? '<p class="gallery-hint">Swipe for more photos (' + images.length + ")</p>" : "") +
+        "</div>" +
+        "<div>" +
+          '<span class="ps-code">ITEM #' + esc(p.code) + "</span>" +
+          '<h2 id="ps-title">' + esc(p.title) + "</h2>" +
+          '<div class="ps-price"><strong>' + money(v.priceCents) + "</strong>" +
+            '<span class="bundle">2+ for ' + money(bundlePrice(v.priceCents)) + " each</span></div>" +
+          low +
+          '<p class="ps-ship">✓ Free shipping · arrives in ' + state.delivery.min + "–" + state.delivery.max + " business days</p>" +
+          (multi
+            ? '<p class="opt-label">Option: ' + esc(v.name) + '</p><div class="variants">' +
+              p.variants.map(function (x) {
+                return '<button type="button" class="variant" data-vid="' + esc(x.vid) + '" aria-pressed="' + (x.vid === c.vid) + '">' + esc(x.name) + "</button>";
+              }).join("") + "</div>"
+            : "") +
+          '<p class="opt-label">Quantity</p>' +
+          '<div class="qty"><button type="button" data-qty="-1" aria-label="Less">−</button><output>' + c.qty + '</output><button type="button" data-qty="1" aria-label="More">+</button></div>' +
+          '<div class="ps-actions">' +
+            '<button class="btn btn-primary btn-block" type="button" data-buy>Buy now · ' + money(lineTotal(v.priceCents, c.qty)) + "</button>" +
+            '<button class="btn btn-ghost btn-block" type="button" data-add>Add to bag</button>' +
+            '<p class="form-error" id="ps-error" role="alert"></p>' +
+          "</div>" +
+          '<ul class="ps-perks"><li>🔒 Secure checkout with Stripe (Apple Pay, Google Pay, cards)</li>' +
+          "<li>✅ Arrives damaged or wrong? Full refund</li><li>📦 Tracking for every order</li></ul>" +
+          (p.description ? '<details class="ps-desc"><summary>Details</summary><p>' + esc(p.description) + "</p></details>" : "") +
+          '<button class="share-link" type="button" data-share>Copy link to this item</button>' +
+        "</div>" +
+      "</div>";
+  }
+
+  function lineTotal(unitCents, qty) {
+    var each = qty >= state.bundle.minQty ? bundlePrice(unitCents) : unitCents;
+    return each * qty;
+  }
+
+  sheet.addEventListener("click", function (e) {
+    if (e.target === sheet || e.target.closest("[data-close]")) { closeProduct(); return; }
+    var c = state.current;
+    if (!c || !c.product) return;
+    var vbtn = e.target.closest("[data-vid]");
+    if (vbtn) { c.vid = vbtn.getAttribute("data-vid"); renderProduct(); return; }
+    var q = e.target.closest("[data-qty]");
+    if (q) { c.qty = Math.max(1, Math.min(5, c.qty + Number(q.getAttribute("data-qty")))); renderProduct(); return; }
+    if (e.target.closest("[data-add]")) {
+      var v = currentVariant();
+      addToBag({ id: c.product.id, vid: v.vid, qty: c.qty, title: c.product.title, variant: v.name, image: v.image || c.product.images[0], priceCents: v.priceCents });
+      track("AddToCart", { content_ids: [c.product.id], content_type: "product", value: lineTotal(v.priceCents, c.qty) / 100, currency: "USD" });
+      closeProduct();
+      toast(bagQty() >= state.bundle.minQty ? "Added! " + state.bundle.percentOff + "% bundle discount unlocked 🎉" : "Added! Add 1 more to save " + state.bundle.percentOff + "%");
+      return;
     }
-    next();
-  }
-  runTerminal();
-
-  /* ---------- Proposal builder ---------- */
-  var builder = $("#builder");
-  if (builder) {
-    var state = { biz: null, needs: [], time: null };
-    var tabs = $$(".builder-tab", builder);
-    var panels = $$(".builder-panel", builder);
-
-    function goStep(n) {
-      tabs.forEach(function (t) {
-        var active = t.getAttribute("data-step") === String(n);
-        t.classList.toggle("is-active", active);
-        t.setAttribute("aria-selected", active ? "true" : "false");
-      });
-      panels.forEach(function (p) {
-        p.classList.toggle("is-active", p.getAttribute("data-panel") === String(n));
-      });
-      if (n === 4) renderProposal();
-      builder.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth", block: "nearest" });
+    if (e.target.closest("[data-buy]")) {
+      var cv = currentVariant();
+      checkout([{ id: c.product.id, vid: cv.vid, qty: c.qty }], e.target.closest("[data-buy]"), $("#ps-error"), lineTotal(cv.priceCents, c.qty));
+      return;
     }
-    tabs.forEach(function (t) {
-      t.addEventListener("click", function () {
-        var n = parseInt(t.getAttribute("data-step"), 10);
-        if (n === 2 && !state.biz) return;
-        if (n === 3 && state.needs.length === 0) return;
-        if (n === 4 && (!state.biz || state.needs.length === 0 || !state.time)) return;
-        goStep(n);
-      });
-    });
-
-    // Step 1: business
-    $$("#biz-choices .choice").forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        $$("#biz-choices .choice").forEach(function (b) { b.classList.remove("is-selected"); });
-        btn.classList.add("is-selected");
-        state.biz = btn.getAttribute("data-biz");
-        setTimeout(function () { goStep(2); }, 220);
-      });
-    });
-
-    // Step 2: needs (multi)
-    var needsNext = $("#needs-next");
-    $$("#need-choices .choice").forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        var need = btn.getAttribute("data-need");
-        var idx = state.needs.indexOf(need);
-        if (idx > -1) {
-          state.needs.splice(idx, 1);
-          btn.classList.remove("is-selected");
-          btn.setAttribute("aria-pressed", "false");
-        } else {
-          state.needs.push(need);
-          btn.classList.add("is-selected");
-          btn.setAttribute("aria-pressed", "true");
-        }
-        needsNext.disabled = state.needs.length === 0;
-      });
-    });
-    $$("[data-next]", builder).forEach(function (b) {
-      b.addEventListener("click", function () { goStep(parseInt(b.getAttribute("data-next"), 10)); });
-    });
-    $$("[data-back]", builder).forEach(function (b) {
-      b.addEventListener("click", function () { goStep(parseInt(b.getAttribute("data-back"), 10)); });
-    });
-
-    // Step 3: timeline
-    $$("#time-choices .choice").forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        $$("#time-choices .choice").forEach(function (b) { b.classList.remove("is-selected"); });
-        btn.classList.add("is-selected");
-        state.time = btn.getAttribute("data-time");
-        setTimeout(function () { goStep(4); }, 220);
-      });
-    });
-
-    $("#proposal-restart").addEventListener("click", function () {
-      state = { biz: null, needs: [], time: null };
-      $$(".choice.is-selected", builder).forEach(function (b) {
-        b.classList.remove("is-selected");
-        b.setAttribute("aria-pressed", "false");
-      });
-      needsNext.disabled = true;
-      goStep(1);
-    });
-
-    var bizLabels = {
-      "real-estate": "Real estate",
-      "law-firm": "Law firm",
-      "contractor": "Contractor / home services",
-      "other": "Local business"
-    };
-    var timeLabels = { asap: "ASAP", month: "2–4 weeks", exploring: "Exploring" };
-
-    function renderProposal() {
-      var out = $("#proposal-output");
-      var lines = "";
-      state.needs.forEach(function (need) {
-        var p = CONFIG.prices[need];
-        if (!p) return;
-        lines += '<div class="proposal-line"><span>' + p.label + '</span><span>Included</span></div>';
-      });
-      var timeline = CONFIG.timelineByScope[0].text;
-      CONFIG.timelineByScope.forEach(function (t) {
-        if (state.needs.length <= t.max) { timeline = t.text; return; }
-      });
-      var rush = state.time === "asap" ? "<p class=\"proposal-meta\">" + CONFIG.rushNote + "</p>" : "";
-      out.innerHTML =
-        '<div class="proposal-line"><span>Business type</span><span>' + bizLabels[state.biz] + '</span></div>' +
-        lines +
-        '<div class="proposal-total"><span>Pricing</span><span>Donation-based</span></div>' +
-        '<p class="proposal-meta">Typical timeline: <strong>' + timeline + '</strong> &middot; Preferred start: ' + timeLabels[state.time] + '<br>' +
-        'No upfront pricing — we\'ll suggest a fair price together only if you decide to become a client. You own 100% of the code.</p>' + rush;
-
-      var body = "Hi Roman,%0D%0A%0D%0AHere's my proposal-builder scope:%0D%0A" +
-        "- Business: " + encodeURIComponent(bizLabels[state.biz]) + "%0D%0A" +
-        state.needs.map(function (n) { return "- " + encodeURIComponent(CONFIG.prices[n] ? CONFIG.prices[n].label : n); }).join("%0D%0A") + "%0D%0A" +
-        "- Timeline: " + encodeURIComponent(timeline) + "%0D%0A" +
-        "- Start: " + encodeURIComponent(timeLabels[state.time]) + "%0D%0A%0D%0A" +
-        "Name:%0D%0ABusiness:%0D%0APhone:%0D%0A";
-      $("#proposal-send").href = "mailto:" + CONFIG.contactEmail +
-        "?subject=" + encodeURIComponent("Proposal request — " + bizLabels[state.biz]) + "&body=" + body;
+    if (e.target.closest("[data-share]")) {
+      var link = window.location.origin + "/?p=" + encodeURIComponent(c.product.id);
+      (navigator.clipboard ? navigator.clipboard.writeText(link) : Promise.reject())
+        .then(function () { toast("Link copied"); })
+        .catch(function () { window.prompt("Copy this link:", link); });
     }
+  });
+  sheet.addEventListener("close", function () { state.current = null; setUrl({}); });
+  function closeProduct() { if (sheet.open) sheet.close(); }
+
+  /* ---------- Bag sheet ---------- */
+  var bagSheet = $("#bag-sheet");
+  function renderBag() {
+    var lines = $("#bag-lines"), foot = $("#bag-foot");
+    if (bag.length === 0) {
+      lines.innerHTML = '<p class="bag-empty">Your bag is empty. Go grab a deal!</p>';
+      foot.innerHTML = '<button class="btn btn-dark btn-block" type="button" data-close>Keep shopping</button>';
+      return;
+    }
+    var qty = bagQty(), bundled = qty >= state.bundle.minQty;
+    var full = 0, total = 0;
+    lines.innerHTML = bag.map(function (l, i) {
+      var each = bundled ? bundlePrice(l.priceCents) : l.priceCents;
+      full += l.priceCents * l.qty;
+      total += each * l.qty;
+      return '<div class="bag-line"><img src="' + esc(l.image) + '" alt="" />' +
+        '<div><div class="t">' + esc(l.title) + '</div><div class="v">' + (l.variant && l.variant !== "Standard" ? esc(l.variant) : "") + "</div>" +
+        '<div class="qty"><button type="button" data-line="' + i + '" data-step="-1" aria-label="Less">−</button><output>' + l.qty +
+        '</output><button type="button" data-line="' + i + '" data-step="1" aria-label="More">+</button></div></div>' +
+        '<div class="p">' + money(each * l.qty) + "</div></div>";
+    }).join("");
+    foot.innerHTML =
+      (bundled
+        ? '<p class="bag-nudge ok">🎉 Bundle deal: ' + state.bundle.percentOff + "% off everything in your bag</p>"
+        : '<p class="bag-nudge">Add 1 more item to save ' + state.bundle.percentOff + "% on everything</p>") +
+      '<div class="bag-total"><span>Total</span><span>' + (bundled ? "<s>" + money(full) + "</s>" : "") + money(total) + "</span></div>" +
+      '<p class="bag-note">Free US shipping. Any sales tax is shown at checkout.</p>' +
+      '<button class="btn btn-primary btn-block" type="button" data-checkout>Checkout securely</button>' +
+      '<p class="form-error" id="bag-error" role="alert"></p>';
+    foot.dataset.total = total;
+  }
+  function openBag() { renderBag(); if (!bagSheet.open) bagSheet.showModal(); }
+  $("#bag-open").addEventListener("click", openBag);
+  bagSheet.addEventListener("click", function (e) {
+    if (e.target === bagSheet || e.target.closest("[data-close]")) { bagSheet.close(); return; }
+    var step = e.target.closest("[data-step]");
+    if (step) {
+      var i = Number(step.getAttribute("data-line")), line = bag[i];
+      if (!line) return;
+      line.qty = Math.min(5, line.qty + Number(step.getAttribute("data-step")));
+      if (line.qty <= 0) bag.splice(i, 1);
+      saveBag();
+      renderBag();
+      return;
+    }
+    var go = e.target.closest("[data-checkout]");
+    if (go) {
+      checkout(bag.map(function (l) { return { id: l.id, vid: l.vid, qty: l.qty }; }), go, $("#bag-error"), Number($("#bag-foot").dataset.total) || 0);
+    }
+  });
+
+  /* ---------- Checkout ---------- */
+  function checkout(items, button, errorEl, valueCents) {
+    var label = button.textContent;
+    button.disabled = true;
+    button.textContent = "Opening secure checkout…";
+    errorEl.textContent = "";
+    track("InitiateCheckout", { value: valueCents / 100, currency: "USD", num_items: items.reduce(function (n, i) { return n + i.qty; }, 0) });
+    fetch("/api/checkout", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ items: items })
+    })
+      .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, data: d }; }); })
+      .then(function (res) {
+        if (!res.ok || !res.data.url) throw new Error(res.data.error || "Checkout hiccup. Please try again.");
+        window.location.href = res.data.url;
+      })
+      .catch(function (err) {
+        errorEl.textContent = err.message || "Checkout hiccup. Please try again.";
+        button.disabled = false;
+        button.textContent = label;
+      });
   }
 
-  /* ---------- Contact form → email ---------- */
-  var form = $("#contact-form");
-  if (form) {
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
-      var name = form.name.value.trim(),
-          business = form.business.value.trim(),
-          contact = form.contact.value.trim(),
-          message = form.message.value.trim();
-      var body = encodeURIComponent(
-        "Name: " + name + "\n" +
-        "Business: " + business + "\n" +
-        "Contact: " + contact + "\n\n" + message
-      );
-      window.location.href = "mailto:" + CONFIG.contactEmail +
-        "?subject=" + encodeURIComponent("New inquiry from " + (business || name)) + "&body=" + body;
-    });
-  }
-
-  /* ---------- Misc ---------- */
-  var emailLink = $("#contact-email");
-  if (emailLink) {
-    emailLink.href = "mailto:" + CONFIG.contactEmail;
-    emailLink.textContent = CONFIG.contactEmail;
-  }
-  var year = $("#year");
-  if (year) year.textContent = new Date().getFullYear();
+  /* ---------- Boot ---------- */
+  $("#year").textContent = new Date().getFullYear();
+  renderBagCount();
+  var params = new URLSearchParams(window.location.search);
+  loadCatalog().then(function () {
+    var code = params.get("i");
+    if (code) {
+      var hit = findByCode(code);
+      if (hit) openProduct(hit.id);
+    }
+  });
+  if (params.get("p")) openProduct(params.get("p"));
+  if (params.get("bag")) openBag();
 })();

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Order Confirmed | Roman's Proposal</title>
+  <meta name="robots" content="noindex" />
+  <meta name="theme-color" content="#0a1a33" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="store-config.js"></script>
+  <script src="pixel.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">R</span><span class="brand-text">Roman's <em>Proposal</em></span></a>
+    </div>
+  </header>
+  <main class="page">
+    <div class="wrap narrow">
+      <div class="panel">
+        <h1>🎉 Order confirmed!</h1>
+        <p>Thanks! Your payment went through and your order is heading to the warehouse.</p>
+        <p>Your order number:</p>
+        <p class="order-no" id="order-no">—</p>
+        <p>Save it. You'll use it to <a id="track-link" href="track.html">track your package</a>. A receipt is on its way to your email.</p>
+        <h2>What happens next</h2>
+        <ol>
+          <li>The warehouse packs your order (usually 1–3 business days).</li>
+          <li>It ships free from the US. Delivery takes about 3–8 business days total.</li>
+          <li>Tracking appears on the <a href="track.html">tracking page</a> once it ships.</li>
+        </ol>
+        <p><a class="btn btn-primary" href="/">Keep shopping</a></p>
+      </div>
+    </div>
+  </main>
+  <script>
+    (function () {
+      var p = new URLSearchParams(location.search);
+      var order = (p.get("order") || "").replace(/[^A-Z0-9-]/gi, "");
+      var value = Number(p.get("v")) || 0;
+      if (order) {
+        document.getElementById("order-no").textContent = order;
+        document.getElementById("track-link").href = "track.html?n=" + encodeURIComponent(order);
+      }
+      try { localStorage.removeItem("rp_bag_v1"); } catch (e) {}
+      // Report the purchase to the Meta Pixel once per order.
+      var key = "rp_px_" + order, seen = false;
+      try { seen = !!localStorage.getItem(key); localStorage.setItem(key, "1"); } catch (e) {}
+      if (order && !seen && window.track) window.track("Purchase", { value: value, currency: "USD" }, { eventID: order });
+    })();
+  </script>
+</body>
+</html>
