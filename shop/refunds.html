@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Returns &amp; Refunds — Northline Finds</title>
+<meta name="description" content="Our 30-day return policy: full refunds, no questions asked.">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;750;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="index.html" aria-label="Northline Finds home">
+      <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2 L14.5 9.5 L22 12 L14.5 14.5 L12 22 L9.5 14.5 L2 12 L9.5 9.5 Z" fill="#fff"/></svg></span>
+      Northline Finds
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="index.html">Shop</a>
+      <a href="about.html">About</a>
+      <a href="faq.html">FAQ</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="header-actions">
+      <button class="cart-btn" data-open-cart aria-label="Open cart">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1.5"/><circle cx="19" cy="21" r="1.5"/><path d="M2 3h3l2.6 12.5a2 2 0 0 0 2 1.5h8.7a2 2 0 0 0 2-1.6L22 7H6"/></svg>
+        Cart <span class="cart-count" data-cart-count>0</span>
+      </button>
+    </div>
+  </div>
+</header>
+<div class="page-hero"><div class="container">
+  <h1>Returns &amp; refunds</h1>
+  <p class="muted" style="max-width:38em">30 days. No questions asked. No restocking fees.</p>
+</div></div>
+<div class="container"><div class="prose">
+  <h2>The short version</h2>
+  <p>If you're not happy, return any unused item in its original condition within <strong>30 days of delivery</strong> for a full refund. That's it.</p>
+  <h2>How to start a return</h2>
+  <ol>
+    <li>Email <a href="mailto:roman.proposal@gmail.com">roman.proposal@gmail.com</a> with your order details and the item(s) you'd like to return.</li>
+    <li>We'll reply within 1 business day with return instructions.</li>
+    <li>Once we receive the item (or proof of return shipment), we refund your original payment method within 3–5 business days.</li>
+  </ol>
+  <h2>Damaged or wrong items</h2>
+  <p>If your item arrives damaged, defective, or isn't what you ordered, email us a photo and we'll make it right immediately — replacement or full refund, your choice, and <strong>we cover the return shipping</strong>.</p>
+  <h2>Return shipping</h2>
+  <p>For change-of-mind returns, the customer covers return postage. For our mistakes (damaged, defective, or wrong items), we cover it.</p>
+  <h2>Non-returnable items</h2>
+  <p>For hygiene and safety reasons, opened personal-care items can't be returned unless they're defective. Everything else in the store is returnable.</p>
+</div></div>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">Northline Finds</div>
+        <p>Useful finds, honestly priced. A small online shop curating trending products we&apos;d buy ourselves. Every order is backed by 30-day returns and real human support.</p>
+        <p class="small">Questions? <a href="mailto:roman.proposal@gmail.com" style="color:#fff">roman.proposal@gmail.com</a></p>
+      </div>
+      <div>
+        <div class="footer-brand" style="font-size:.95rem">Shop</div>
+        <ul class="footer-links">
+          <li><a href="index.html">All products</a></li>
+          <li><a href="cart.html">Cart &amp; checkout</a></li>
+          <li><a href="shipping.html">Shipping info</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-brand" style="font-size:.95rem">Help</div>
+        <ul class="footer-links">
+          <li><a href="about.html">About us</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="refunds.html">Returns &amp; refunds</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Northline Finds. All rights reserved.</span>
+      <span>Secure checkout powered by Stripe.</span>
+    </div>
+  </div>
+</footer>
+<div class="drawer-overlay" id="drawer-overlay"></div>
+<aside class="drawer" id="cart-drawer" aria-label="Shopping cart">
+  <div class="drawer-head"><h2>Your cart</h2><button class="drawer-close" data-close-cart aria-label="Close cart">✕</button></div>
+  <div class="drawer-items" id="drawer-items"></div>
+  <div class="drawer-foot" id="drawer-foot">
+    <div class="drawer-total"><span>Subtotal</span><span id="drawer-total">$0.00</span></div>
+    <a class="btn btn-primary btn-block" href="cart.html">Review &amp; checkout</a>
+    <button class="btn btn-outline btn-block" data-close-cart>Keep shopping</button>
+  </div>
+</aside>
+<div class="toast" id="toast" role="status"></div>
+<script src="assets/js/products.js"></script>
+<script src="assets/js/catalog.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" viewBox="0 0 800 800">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f2f7fd"/>
+      <stop offset="1" stop-color="#dfeafb"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="800" fill="url(#g)"/>
+  <rect x="270" y="200" width="260" height="260" rx="60" fill="#ffffff" stroke="#d7e3f5" stroke-width="3"/>
+  <g transform="translate(330,262) scale(7)" fill="none" stroke="#0b2a5b" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="8.5" cy="10" r="1.8"/><circle cx="15.5" cy="10" r="1.8"/><circle cx="5.8" cy="14.5" r="1.8"/><circle cx="18.2" cy="14.5" r="1.8"/><path d="M12 12.5c2.8 0 5 2 5 4.2 0 1.4-1.2 2.3-2.6 2.3-1 0-1.7-.5-2.4-.5s-1.4.5-2.4.5c-1.4 0-2.6-.9-2.6-2.3 0-2.2 2.2-4.2 5-4.2z"/></g>
+  <text x="400" y="640" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="40" font-weight="700" fill="#0b2a5b">Reusable Pet Hair</text><text x="400" y="692" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="40" font-weight="700" fill="#0b2a5b">Remover Roller</text>
+  <text x="400" y="740" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="600" fill="#7d8aa0" letter-spacing="4">NORTHLINE FINDS</text>
+</svg>
