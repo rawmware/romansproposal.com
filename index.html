@@ -45,6 +45,16 @@
     .ship { font-size: 12px; color: var(--muted); }
     .buy { margin-top: auto; display: block; text-align: center; background: var(--buy); color: #fff; text-decoration: none; font-weight: 800; padding: 11px 8px; border-radius: 10px; font-size: 15px; }
     .buy:hover, .buy:focus-visible { background: var(--buy-hover); }
+    .search { max-width: 1120px; margin: 8px auto 0; padding: 0 16px; display: flex; gap: 8px; }
+    .search input { flex: 1; min-width: 0; font: inherit; font-size: 16px; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--card); color: var(--ink); }
+    .search button { font: inherit; font-weight: 800; padding: 0 18px; border: 0; border-radius: 12px; background: var(--ink); color: var(--bg); cursor: pointer; }
+    .chips { max-width: 1120px; margin: 10px auto 0; padding: 0 16px; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; }
+    .chips button { flex: none; font: inherit; font-size: 13px; font-weight: 600; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); color: var(--ink); cursor: pointer; }
+    .chips button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+    .status { max-width: 1120px; margin: 0 auto; padding: 0 16px; color: var(--muted); font-size: 14px; }
+    .status:empty { display: none; }
+    .was { color: var(--muted); font-size: 14px; font-weight: 600; text-decoration: line-through; margin-left: 6px; }
+    .drop { align-self: flex-start; background: #fee2e2; color: #b91c1c; font-size: 11px; font-weight: 800; padding: 2px 7px; border-radius: 6px; }
     footer { border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; }
     footer div { max-width: 1120px; margin: 0 auto; padding: 18px 16px 28px; display: flex; flex-wrap: wrap; gap: 8px 18px; }
   </style>
@@ -59,10 +69,17 @@
 
   <div class="notice" id="notice" hidden></div>
 
+  <form class="search" id="search" role="search">
+    <input id="q" type="search" placeholder="Search anything — phone case, LED lights, dog toys…" aria-label="Search products" autocomplete="off" />
+    <button type="submit">Search</button>
+  </form>
+  <div class="chips" id="chips"></div>
+
   <div class="head">
-    <h1>Today's lineup · cheapest first</h1>
+    <h1 id="heading">Today's lineup · cheapest first</h1>
     <span class="chip">New lineup in <span class="t" data-timer>--:--:--</span></span>
   </div>
+  <p class="status" id="status" aria-live="polite"></p>
 
   <main class="grid" id="grid" aria-live="polite"></main>
 
@@ -106,25 +123,101 @@
       });
     }
 
-    function render(products) {
-      products = products.slice().sort(function (a, b) { return a.price - b.price; });
-      document.getElementById("grid").innerHTML = products.map(function (p) {
-        return '<article class="card">' +
-          '<img src="' + esc(p.image) + '" alt="' + esc(p.name) + '" loading="lazy" referrerpolicy="no-referrer">' +
-          '<div class="body">' +
-            '<span class="cat">' + esc(p.category) + '</span>' +
-            '<span class="name">' + esc(p.name) + '</span>' +
-            '<span class="price">$' + Number(p.price).toFixed(2) + '</span>' +
-            '<span class="ship">Free US shipping</span>' +
-            '<a class="buy" href="' + esc(p.buy) + '">Buy now</a>' +
-          '</div></article>';
+    var all = FALLBACK.slice();
+    var category = "All";
+    var grid = document.getElementById("grid");
+    var statusEl = document.getElementById("status");
+    var heading = document.getElementById("heading");
+    var qEl = document.getElementById("q");
+
+    function money(n) { return "$" + Number(n).toFixed(2); }
+
+    function card(p) {
+      var was = p.wasPrice && p.wasPrice > p.price;
+      return '<article class="card">' +
+        '<img src="' + esc(p.image) + '" alt="' + esc(p.name) + '" loading="lazy" referrerpolicy="no-referrer">' +
+        '<div class="body">' +
+          (was ? '<span class="drop">Price drop</span>' : '<span class="cat">' + esc(p.category) + '</span>') +
+          '<span class="name">' + esc(p.name) + '</span>' +
+          '<span class="price">' + money(p.price) + (was ? '<span class="was">' + money(p.wasPrice) + '</span>' : '') + '</span>' +
+          '<span class="ship">Free US shipping</span>' +
+          '<a class="buy" href="' + esc(p.buy) + '">Buy now</a>' +
+        '</div></article>';
+    }
+
+    function matches(p, words) {
+      var hay = (p.name + " " + p.category).toLowerCase();
+      return words.every(function (w) { return hay.indexOf(w) !== -1; });
+    }
+
+    function show() {
+      var words = qEl.value.toLowerCase().split(/\s+/).filter(Boolean);
+      var list = all.filter(function (p) {
+        return (category === "All" || p.category === category) && matches(p, words);
+      }).sort(function (a, b) { return a.price - b.price; });
+      heading.textContent = words.length ? 'Results for "' + qEl.value.trim() + '"'
+        : category === "All" ? "Today's lineup · cheapest first" : category + " · cheapest first";
+      grid.innerHTML = list.map(card).join("");
+      return list.length;
+    }
+
+    function renderChips() {
+      var cats = ["All"];
+      all.forEach(function (p) { if (cats.indexOf(p.category) === -1) cats.push(p.category); });
+      document.getElementById("chips").innerHTML = cats.map(function (c) {
+        return '<button type="button" data-cat="' + esc(c) + '" aria-pressed="' + (c === category) + '">' + esc(c) + "</button>";
       }).join("");
     }
 
-    render(FALLBACK);
+    document.getElementById("chips").addEventListener("click", function (e) {
+      var b = e.target.closest("button[data-cat]");
+      if (!b) return;
+      category = b.getAttribute("data-cat");
+      renderChips();
+      show();
+    });
+
+    qEl.addEventListener("input", function () { statusEl.textContent = ""; show(); });
+
+    // Nothing on the site matches: search the suppliers live and add what comes back.
+    document.getElementById("search").addEventListener("submit", function (e) {
+      e.preventDefault();
+      var q = qEl.value.trim();
+      category = "All";
+      renderChips();
+      if (show() > 0 || q.length < 2) { statusEl.textContent = ""; return; }
+      statusEl.textContent = 'Finding cheap "' + q + '" from our suppliers… about 30 seconds.';
+      fetch("/api/find?q=" + encodeURIComponent(q))
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+          var found = (d.products || []).filter(function (p) {
+            return !all.some(function (x) { return x.id === p.id; });
+          });
+          all = found.concat(all);
+          renderChips();
+          if (qEl.value.trim() !== q) return;
+          if (found.length) {
+            qEl.value = "";
+            heading.textContent = 'New for "' + q + '"';
+            grid.innerHTML = found.sort(function (a, b) { return a.price - b.price; }).map(card).join("");
+            statusEl.textContent = "";
+          } else {
+            statusEl.textContent = d.error || ('Nothing cheap enough for "' + q + '" right now. Try another word.');
+          }
+        })
+        .catch(function () { statusEl.textContent = "Search hit a snag. Try again."; });
+    });
+
+    renderChips();
+    show();
     fetch("/api/catalog")
       .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
-      .then(function (d) { if (d.products && d.products.length) render(d.products); })
+      .then(function (d) {
+        if (!d.products || !d.products.length) return;
+        all = d.products;
+        renderChips();
+        show();
+      })
       .catch(function () {});
 
     var q = new URLSearchParams(location.search);
