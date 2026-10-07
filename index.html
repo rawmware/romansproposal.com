@@ -1,475 +1,141 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI Automation &amp; Training in NH, ME &amp; MA | Roman's Proposal</title>
-  <meta name="description" content="AI automation, custom applications, and training for businesses in Portsmouth, Rye, New Hampshire, Maine, and Massachusetts. In person and online." />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Northline Finds — Cheap Finds, Free US Shipping</title>
+  <meta name="description" content="Cheap, useful finds with free US shipping. New lineup every day. Tap, buy, done." />
   <link rel="canonical" href="https://www.romansproposal.com/" />
-  <meta property="og:title" content="Roman's Proposal — Software that pays for itself" />
-  <meta property="og:description" content="Applications, AI assistants, and automations for real estate teams, law firms, and local businesses. Donation-supported. Delivered in days." />
-  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Northline Finds — Cheap Finds, Free US Shipping" />
+  <meta property="og:description" content="New cheap finds every day. Tap, buy, done." />
   <meta property="og:url" content="https://www.romansproposal.com/" />
-  <meta property="og:site_name" content="Roman's Proposal" />
-  <meta name="twitter:card" content="summary" />
-  <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "Organization",
-      "@id": "https://www.romansproposal.com/#organization",
-      "name": "Roman's Proposal",
-      "url": "https://www.romansproposal.com/",
-      "email": "roman.proposal@gmail.com",
-      "description": "Custom applications, AI assistants, lead follow-up automation, and booking systems for small businesses.",
-      "areaServed": [
-        {
-          "@type": "City",
-          "name": "Portsmouth",
-          "containedInPlace": {
-            "@type": "State",
-            "name": "New Hampshire"
-          }
-        },
-        {
-          "@type": "City",
-          "name": "Rye",
-          "containedInPlace": {
-            "@type": "State",
-            "name": "New Hampshire"
-          }
-        },
-        {
-          "@type": "State",
-          "name": "New Hampshire"
-        },
-        {
-          "@type": "State",
-          "name": "Maine"
-        },
-        {
-          "@type": "State",
-          "name": "Massachusetts"
-        }
-      ]
-    },
-    {
-      "@type": "WebSite",
-      "@id": "https://www.romansproposal.com/#website",
-      "url": "https://www.romansproposal.com/",
-      "name": "Roman's Proposal",
-      "publisher": {
-        "@id": "https://www.romansproposal.com/#organization"
-      }
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <style>
+    :root {
+      --bg: #f6f7f9; --card: #ffffff; --ink: #0f172a; --muted: #64748b; --line: #e2e8f0;
+      --accent: #0ea5e9; --buy: #16a34a; --buy-hover: #15803d; --bar: #0f172a; --bar-ink: #f8fafc; --warn: #facc15;
     }
-  ]
-}
-</script>
-  <meta name="theme-color" content="#0b1120" />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b1120'/%3E%3Ctext x='32' y='44' font-family='Georgia,serif' font-size='36' fill='%23c9a227' text-anchor='middle'%3ER%3C/text%3E%3C/svg%3E" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #0b1120; --card: #111827; --ink: #f1f5f9; --muted: #94a3b8; --line: #1f2937; --bar: #020617; }
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.4 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    a { color: inherit; }
+    .bar { position: sticky; top: 0; z-index: 10; background: var(--bar); color: var(--bar-ink); text-align: center; padding: 9px 16px; font-size: 14px; font-weight: 600; }
+    .bar .t { color: var(--warn); font-variant-numeric: tabular-nums; }
+    header { max-width: 1120px; margin: 0 auto; padding: 18px 16px 6px; display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    .brand { font-weight: 800; font-size: 22px; letter-spacing: -0.02em; text-decoration: none; }
+    .tag { color: var(--muted); font-size: 14px; }
+    .notice { max-width: 1120px; margin: 8px auto 0; padding: 0 16px; }
+    .notice div { background: #dcfce7; color: #14532d; border-radius: 10px; padding: 12px 14px; font-weight: 600; }
+    .notice div.err { background: #fee2e2; color: #7f1d1d; }
+    .head { max-width: 1120px; margin: 0 auto; padding: 10px 16px; display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .head h1 { font-size: 18px; margin: 0; }
+    .chip { background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 5px 11px; font-size: 13px; color: var(--muted); }
+    .chip .t { color: var(--ink); font-weight: 700; font-variant-numeric: tabular-nums; }
+    .grid { max-width: 1120px; margin: 0 auto; padding: 4px 16px 28px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    @media (min-width: 720px) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; } }
+    @media (min-width: 1000px) { .grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; display: flex; flex-direction: column; }
+    .card img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; display: block; background: #fff; }
+    .body { padding: 10px 11px 12px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+    .cat { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); }
+    .name { font-size: 14px; font-weight: 600; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 2.6em; }
+    .price { font-size: 20px; font-weight: 800; }
+    .ship { font-size: 12px; color: var(--muted); }
+    .buy { margin-top: auto; display: block; text-align: center; background: var(--buy); color: #fff; text-decoration: none; font-weight: 800; padding: 11px 8px; border-radius: 10px; font-size: 15px; }
+    .buy:hover, .buy:focus-visible { background: var(--buy-hover); }
+    footer { border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; }
+    footer div { max-width: 1120px; margin: 0 auto; padding: 18px 16px 28px; display: flex; flex-wrap: wrap; gap: 8px 18px; }
+  </style>
 </head>
 <body>
-  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="bar">Free US shipping · Today's deals refresh in <span class="t" data-timer>--:--:--</span></div>
 
-  <header class="site-header" id="site-header">
-    <div class="wrap header-inner">
-      <a class="brand" href="#top" aria-label="Roman's Proposal — home">
-        <span class="brand-mark" aria-hidden="true">R</span>
-        <span class="brand-text">Roman&rsquo;s <em>Proposal</em></span>
-      </a>
-      <nav class="site-nav" id="site-nav" aria-label="Primary">
-        <a href="#services">Services</a>
-        <a href="#work">Work</a>
-        <a href="#process">Process</a>
-        <a href="#webinars">Webinars</a>
-        <a href="#training">Training</a>
-        <a href="#faq">FAQ</a>
-      </nav>
-      <div class="header-actions">
-        <a class="btn btn-ghost btn-sm" href="https://buy.stripe.com/00w6oGdNPaFC4770Wz6EU00" target="_blank" rel="noopener">Donate</a>
-        <a class="btn btn-primary btn-sm" href="#proposal">Get a proposal</a>
-        <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Open menu">
-          <span></span><span></span><span></span>
-        </button>
-      </div>
-    </div>
+  <header>
+    <a class="brand" href="/">Northline Finds</a>
+    <span class="tag">Cheap finds. Tap, buy, done.</span>
   </header>
 
-  <main id="main">
-    <!-- HERO -->
-    <section class="hero" id="top">
-      <div class="wrap hero-grid">
-        <div class="hero-copy">
-          <p class="eyebrow">Software &amp; AI for local business</p>
-          <h1>AI &amp; automation for <span class="accent">small business.</span></h1>
-          <p class="lede">I&rsquo;m Roman. I work in technology full-time &mdash; and through this studio, I build applications, AI assistants, and automations for real estate teams, law firms, and local businesses. Donation-supported, delivered in days, and you own every line of it.</p>
-          <div class="hero-cta">
-            <a class="btn btn-primary btn-lg" href="#proposal">Build my proposal</a>
-            <a class="btn btn-ghost btn-lg" href="#work">See what&rsquo;s possible</a>
-            <a class="btn btn-ghost btn-lg" href="https://buy.stripe.com/00w6oGdNPaFC4770Wz6EU00" target="_blank" rel="noopener">Donate</a>
-          </div>
-          <p class="hero-note">60-second proposal builder &middot; No pressure, no pushy pricing</p>
-        </div>
-        <div class="hero-terminal" aria-hidden="true">
-          <div class="terminal">
-            <div class="terminal-bar"><span></span><span></span><span></span></div>
-            <div class="terminal-body" id="terminal-body"></div>
-          </div>
-        </div>
-      </div>
-    </section>
+  <div class="notice" id="notice" hidden></div>
 
-    <!-- TRUST STRIP -->
-    <section class="strip" aria-label="How I work">
-      <div class="wrap strip-grid">
-        <div class="strip-item"><strong>Donation-based</strong><span>No pushy pricing. We agree on a fair price only if you become a client.</span></div>
-        <div class="strip-item"><strong>Days, not months</strong><span>First version in your hands within days.</span></div>
-        <div class="strip-item"><strong>You own everything</strong><span>Code, domain, accounts &mdash; all in your name.</span></div>
-        <div class="strip-item"><strong>Direct line to the builder</strong><span>No account managers. You talk to me.</span></div>
-        <div class="strip-item"><strong>Enterprise AI certified</strong><span>Completed an enterprise AI platform fundamentals program.</span></div>
-      </div>
-    </section>
+  <div class="head">
+    <h1>Today's lineup · cheapest first</h1>
+    <span class="chip">New lineup in <span class="t" data-timer>--:--:--</span></span>
+  </div>
 
-    <!-- SERVICES -->
-    <section class="section" id="services">
-      <div class="wrap">
-        <p class="eyebrow reveal">Services</p>
-        <h2 class="reveal">Everything a local business needs to look big and move fast.</h2>
-        <p class="section-sub reveal">One builder, zero agency overhead. Pick one need or bundle them &mdash; the proposal builder below scopes it in seconds.</p>
-        <div class="cards">
-          <article class="card reveal">
-            <h3>Custom business applications</h3>
-            <p>Fast, mobile-first applications that turn visitors into calls and form fills. Built to rank, built to convert.</p>
-          </article>
-          <article class="card reveal">
-            <h3>AI chat assistants</h3>
-            <p>A 24/7 assistant trained on your business &mdash; answers questions, captures leads, books appointments while you sleep.</p>
-          </article>
-          <article class="card reveal">
-            <h3>Lead follow-up automation</h3>
-            <p>New inquiry? Instant text or email back, logged to your CRM. Never lose a lead to a slow reply again.</p>
-          </article>
-          <article class="card reveal">
-            <h3>Booking &amp; intake systems</h3>
-            <p>Client intake for firms, showing schedulers for agents, quote flows for contractors &mdash; no more phone tag.</p>
-          </article>
-          <article class="card reveal">
-            <h3>Integrations</h3>
-            <p>Your CRM, calendar, email, and spreadsheets talking to each other. Kill the copy-paste busywork.</p>
-          </article>
-          <article class="card reveal">
-            <h3>Care plans</h3>
-            <p>Updates, monitoring, and small improvements every month. Your tech stays sharp without you thinking about it.</p>
-          </article>
-        </div>
-      </div>
-    </section>
+  <main class="grid" id="grid" aria-live="polite"></main>
 
-    <!-- INDUSTRIES -->
-    <section class="section section-alt" id="industries">
-      <div class="wrap">
-        <p class="eyebrow reveal">Who I build for</p>
-        <h2 class="reveal">Built for the way <em>your</em> business actually runs.</h2>
-        <div class="industry-grid">
-          <article class="industry reveal">
-            <p class="industry-tag">Real estate</p>
-            <h3>Every lead answered in under a minute.</h3>
-            <ul>
-              <li>Agent &amp; team applications that capture every inquiry</li>
-              <li>Instant SMS follow-up on new leads</li>
-              <li>Showing scheduler that syncs your calendar</li>
-              <li>Listing alerts and market updates on autopilot</li>
-            </ul>
-          </article>
-          <article class="industry reveal">
-            <p class="industry-tag">Law firms</p>
-            <h3>Intake that never sleeps.</h3>
-            <ul>
-              <li>24/7 intake assistant that pre-qualifies callers</li>
-              <li>Conflict-check friendly intake forms</li>
-              <li>Consultation booking without the back-and-forth</li>
-              <li>Follow-up sequences for consultations that ghost</li>
-            </ul>
-          </article>
-        </div>
-        <p class="section-sub reveal" style="margin-top:2rem">Contractors, med spas, home services, financial advisors &mdash; if your business lives on leads and appointments, this is for you.</p>
-      </div>
-    </section>
-
-    <!-- WORK -->
-    <section class="section" id="work">
-      <div class="wrap">
-        <p class="eyebrow reveal">Proof of work</p>
-        <h2 class="reveal">Don&rsquo;t take my word for it. Look at the work.</h2>
-        <div class="cards">
-          <article class="card reveal">
-            <h3>Tizi &mdash; local AI assistant</h3>
-            <p>A full AI chat app I designed and built: streaming responses, model switching, persistent chat history &mdash; plus a native iOS version. Your AI assistant would be built on the same chops.</p>
-            <a class="card-link" href="https://tizi.host" target="_blank" rel="noopener">tizi.host &rarr;</a>
-          </article>
-          <article class="card reveal">
-            <h3>RawmWare &mdash; creative engineering</h3>
-            <p>My portfolio and lab: interactive web experiments, tooling, and shipped side projects. This is where I push what the browser can do.</p>
-            <a class="card-link" href="https://rawmware.com" target="_blank" rel="noopener">rawmware.com &rarr;</a>
-          </article>
-          <article class="card reveal">
-            <h3>Open source on GitHub</h3>
-            <p>Real code, public repos &mdash; local AI agents, music tooling, web experiments. Read the code before you ever get on a call.</p>
-            <a class="card-link" href="https://github.com/rawmware" target="_blank" rel="noopener">github.com/rawmware &rarr;</a>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- PROCESS -->
-    <section class="section section-alt" id="process">
-      <div class="wrap">
-        <p class="eyebrow reveal">Process</p>
-        <h2 class="reveal">From &ldquo;we need this&rdquo; to live in four steps.</h2>
-        <ol class="steps">
-          <li class="reveal"><span class="step-n">1</span><div><h3>Tell me what you need</h3><p>Use the proposal builder below &mdash; 60 seconds, no call required.</p></div></li>
-          <li class="reveal"><span class="step-n">2</span><div><h3>Fair pricing, together</h3><p>If you want to become a client, I&rsquo;ll suggest a fair price. No pressure, no obligation.</p></div></li>
-          <li class="reveal"><span class="step-n">3</span><div><h3>First version in days</h3><p>You review something real fast, we refine together.</p></div></li>
-          <li class="reveal"><span class="step-n">4</span><div><h3>Launch &amp; support</h3><p>Deployed, handed over, documented &mdash; with a care plan if you want one.</p></div></li>
-        </ol>
-      </div>
-    </section>
-
-    <!-- PROPOSAL BUILDER -->
-    <section class="section builder-section" id="proposal">
-      <div class="wrap">
-        <p class="eyebrow reveal">The proposal builder</p>
-        <h2 class="reveal">Your proposal, in 60 seconds.</h2>
-        <p class="section-sub reveal">Answer three questions. Get a clear scope summary &mdash; then send it to me in one tap and we&rsquo;ll figure out fair pricing together if you decide to book.</p>
-
-        <div class="builder reveal" id="builder">
-          <div class="builder-steps" role="tablist" aria-label="Proposal steps">
-            <button class="builder-tab is-active" data-step="1" role="tab" aria-selected="true">1 &middot; Business</button>
-            <button class="builder-tab" data-step="2" role="tab" aria-selected="false">2 &middot; Needs</button>
-            <button class="builder-tab" data-step="3" role="tab" aria-selected="false">3 &middot; Timeline</button>
-            <button class="builder-tab" data-step="4" role="tab" aria-selected="false">4 &middot; Proposal</button>
-          </div>
-
-          <div class="builder-panels">
-            <div class="builder-panel is-active" data-panel="1" role="tabpanel">
-              <h3>What kind of business are you?</h3>
-              <div class="choice-grid" id="biz-choices">
-                <button class="choice" data-biz="real-estate"><strong>Real estate</strong><span>Agent, team, or brokerage</span></button>
-                <button class="choice" data-biz="law-firm"><strong>Law firm</strong><span>Solo or multi-attorney</span></button>
-                <button class="choice" data-biz="contractor"><strong>Contractor / home services</strong><span>Trades, remodeling, services</span></button>
-                <button class="choice" data-biz="other"><strong>Something else</strong><span>Med spa, advisor, retail&hellip;</span></button>
-              </div>
-            </div>
-
-            <div class="builder-panel" data-panel="2" role="tabpanel">
-              <h3>What do you need? <small>(pick any)</small></h3>
-              <div class="choice-grid" id="need-choices">
-                <button class="choice choice-multi" data-need="application" aria-pressed="false"><strong>New application</strong><span>Fast, mobile-first, built to convert</span></button>
-                <button class="choice choice-multi" data-need="ai-chat" aria-pressed="false"><strong>AI chat assistant</strong><span>Answers clients 24/7, trained on your business</span></button>
-                <button class="choice choice-multi" data-need="lead-auto" aria-pressed="false"><strong>Lead follow-up automation</strong><span>Instant response to every inquiry</span></button>
-                <button class="choice choice-multi" data-need="booking" aria-pressed="false"><strong>Booking &amp; intake</strong><span>Scheduling, intake forms, quote flows</span></button>
-                <button class="choice choice-multi" data-need="crm" aria-pressed="false"><strong>CRM integration</strong><span>Connect your tools, kill busywork</span></button>
-              </div>
-              <div class="builder-nav">
-                <button class="btn btn-ghost" data-back="1">&larr; Back</button>
-                <button class="btn btn-primary" data-next="3" id="needs-next" disabled>Continue &rarr;</button>
-              </div>
-            </div>
-
-            <div class="builder-panel" data-panel="3" role="tabpanel">
-              <h3>When do you want to start?</h3>
-              <div class="choice-grid" id="time-choices">
-                <button class="choice" data-time="asap"><strong>ASAP</strong><span>Ready to move this week</span></button>
-                <button class="choice" data-time="month"><strong>2&ndash;4 weeks</strong><span>Planning ahead</span></button>
-                <button class="choice" data-time="exploring"><strong>Just exploring</strong><span>Want a number first</span></button>
-              </div>
-              <div class="builder-nav">
-                <button class="btn btn-ghost" data-back="2">&larr; Back</button>
-              </div>
-            </div>
-
-            <div class="builder-panel" data-panel="4" role="tabpanel">
-              <h3>Your proposal</h3>
-              <div class="proposal-output" id="proposal-output" aria-live="polite"></div>
-              <div class="builder-nav">
-                <button class="btn btn-ghost" id="proposal-restart">Start over</button>
-                <a class="btn btn-primary" id="proposal-send" href="#">Send me this proposal &rarr;</a>
-              </div>
-              <p class="fineprint">No upfront pricing &mdash; we&rsquo;ll suggest a fair price only if you decide to become a client. Donations keep this work going.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- WEBINARS & DONATE -->
-    <section class="section" id="webinars">
-      <div class="wrap">
-        <p class="eyebrow reveal">Webinars &amp; support</p>
-        <h2 class="reveal">Learn first. Pay only if it helps.</h2>
-        <p class="section-sub reveal">Start with the free intro. Go deeper with the advanced session when you&rsquo;re ready. Everything else is donation-supported &mdash; no prices pushed on you.</p>
-        <div class="price-grid">
-          <article class="price-card reveal">
-            <h3>Free Intro Webinar</h3>
-            <p class="price">Free</p>
-            <p class="price-desc">Introductionary info: what I build, how AI can help your business, and what&rsquo;s possible.</p>
-            <ul>
-              <li>What applications + AI can do for local business</li>
-              <li>Live Q&amp;A with Roman</li>
-              <li>No pitch, no pressure</li>
-            </ul>
-            <a class="btn btn-ghost" href="mailto:roman.proposal@gmail.com?subject=Free%20Intro%20Webinar%20—%20Reserve%20my%20spot">Reserve free spot</a>
-          </article>
-          <article class="price-card price-featured reveal">
-            <p class="price-flag">Go deeper</p>
-            <h3>Advanced Webinar</h3>
-            <p class="price">$99</p>
-            <p class="price-desc">Additional information: hands-on walkthroughs, real setups, and templates you can use.</p>
-            <ul>
-              <li>Deep-dive on AI assistants &amp; automations</li>
-              <li>Real client examples &amp; templates</li>
-              <li>Replay included</li>
-            </ul>
-            <a class="btn btn-primary" href="https://buy.stripe.com/eVqeVc6lnfZW477cFh6EU01" target="_blank" rel="noopener">Get access — $99</a>
-          </article>
-          <article class="price-card reveal">
-            <h3>Donate</h3>
-            <p class="price">Pay what you want</p>
-            <p class="price-desc">Keep this work going. Donations support free content and help local businesses get started.</p>
-            <ul>
-              <li>Support free webinars &amp; guides</li>
-              <li>Any amount helps</li>
-              <li>Thank you!</li>
-            </ul>
-            <a class="btn btn-ghost" href="https://buy.stripe.com/00w6oGdNPaFC4770Wz6EU00" target="_blank" rel="noopener">Donate</a>
-          </article>
-        </div>
-        <p class="section-sub reveal" style="text-align:center">Want to become a client? Run the proposal builder above &mdash; we&rsquo;ll suggest a fair price together, only if you decide to book.</p>
-      </div>
-    </section>
-
-    <!-- 1:1 TRAINING -->
-    <section class="section" id="training">
-      <div class="wrap">
-        <p class="eyebrow reveal">1:1 training</p>
-        <h2 class="reveal">Learn AI with me, one-on-one.</h2>
-        <p class="section-sub reveal">Personal training sessions &mdash; just you and me, at your pace. Book below, then we&rsquo;ll schedule a time by email.</p>
-        <div class="price-grid two">
-          <article class="price-card reveal">
-            <h3>AI Intro &mdash; 1:1</h3>
-            <p class="price">$100 <span class="per">/ 1 hour</span></p>
-            <p class="price-desc">A one-on-one training session for beginners or anyone learning to use AI.</p>
-            <ul>
-              <li>What AI actually is, in plain English</li>
-              <li>Set up AI for your daily life &amp; work</li>
-              <li>Your questions, answered live</li>
-            </ul>
-            <a class="btn btn-ghost" href="https://buy.stripe.com/eVq14m257eVS477cFh6EU02" target="_blank" rel="noopener">Book intro &mdash; $100</a>
-          </article>
-          <article class="price-card price-featured reveal">
-            <p class="price-flag">For pros</p>
-            <h3>AI Advanced &mdash; 1:1</h3>
-            <p class="price">$250 <span class="per">/ session</span></p>
-            <p class="price-desc">For freelancers and workplace teams: learn to use AI in an enterprise setting.</p>
-            <ul>
-              <li>AI workflows for real client &amp; team work</li>
-              <li>API keys &amp; bring-your-own-key setup</li>
-              <li>Enterprise patterns: cost, privacy, reliability</li>
-            </ul>
-            <a class="btn btn-primary" href="https://buy.stripe.com/8x2cN46ln152cDD34H6EU03" target="_blank" rel="noopener">Book advanced &mdash; $250</a>
-          </article>
-        </div>
-        <p class="section-sub reveal" style="text-align:center">After payment, email <a href="mailto:roman.proposal@gmail.com">roman.proposal@gmail.com</a> and we&rsquo;ll pick a time.</p>
-      </div>
-    </section>
-
-    <!-- FAQ -->
-    <section class="section section-alt" id="faq">
-      <div class="wrap narrow">
-        <p class="eyebrow reveal">FAQ</p>
-        <h2 class="reveal">Fair questions, straight answers.</h2>
-        <div class="faq">
-          <details class="reveal">
-            <summary>Do I own everything you build?</summary>
-            <p>Yes &mdash; 100%. The code, the domain, and every account are set up in your name. If we ever part ways, everything keeps running and you can hand it to anyone.</p>
-          </details>
-          <details class="reveal">
-            <summary>What does &ldquo;bring your own key&rdquo; mean for the AI parts?</summary>
-            <p>You create your own AI provider account and API key; I wire everything to it. You pay the provider directly &mdash; usually a few dollars a month for a small business &mdash; with zero markup from me and no lock-in. Swap providers or keys anytime.</p>
-          </details>
-          <details class="reveal">
-            <summary>How fast is &ldquo;days, not months&rdquo; really?</summary>
-            <p>Most projects go live in 1&ndash;2 weeks. A starter site can ship in about a week. You&rsquo;ll see a working first version within days of kickoff, not a mockup in a slide deck.</p>
-          </details>
-          <details class="reveal">
-            <summary>How do we start?</summary>
-            <p>Run the proposal builder above, hit send, and I&rsquo;ll reply within one business day with a fixed quote. One short call to align, then I build.</p>
-          </details>
-          <details class="reveal">
-            <summary>I already have an application. Can you work with it?</summary>
-            <p>Usually, yes. I can rebuild it properly or add just the pieces you&rsquo;re missing &mdash; an AI assistant, lead automation, or a booking flow &mdash; without touching what already works.</p>
-          </details>
-          <details class="reveal">
-            <summary>What does it cost to keep running?</summary>
-            <p>Very little. Hosting for these applications is typically low-cost, and AI usage is billed by your provider at cost &mdash; most small businesses land in the single digits per month. If you become a client, I&rsquo;ll walk through the exact numbers with you.</p>
-          </details>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="guides">
-      <div class="wrap narrow">
-        <p class="eyebrow">Planning your project</p>
-        <h2>What should your business automate first?</h2>
-        <p>Compare lead follow-up, booking, intake, and AI assistants. Use a practical checklist to define the workflow, estimate time savings, and plan for exceptions before choosing a tool.</p>
-        <a class="card-link" href="/automation-planning-guide.html">Read the small business automation guide &rarr;</a>
-      </div>
-    </section>
-
-    <section class="section section-alt" id="service-area"><div class="wrap narrow">
-      <p class="eyebrow">Serving New England</p><h2>AI help in Portsmouth, Rye, and beyond.</h2>
-      <p>Custom applications, automation, and AI training for businesses throughout New Hampshire, Maine, and Massachusetts. Work with Roman in person or online; scheduling and travel are agreed with you.</p>
-      <a class="card-link" href="/ai-automation-new-england.html">Explore regional services and training &rarr;</a>
-    </div></section>
-    <!-- CONTACT -->
-    <section class="section contact-section" id="contact">
-      <div class="wrap narrow">
-        <p class="eyebrow reveal">Contact</p>
-        <h2 class="reveal">Let&rsquo;s talk about your business.</h2>
-        <p class="section-sub reveal">Tell me what you&rsquo;re trying to fix or build. I reply within one business day &mdash; usually much faster.</p>
-        <form class="contact-form reveal" id="contact-form">
-          <div class="form-row">
-            <label>Your name<input type="text" name="name" autocomplete="name" required placeholder="Jane Smith" /></label>
-            <label>Business<input type="text" name="business" autocomplete="organization" placeholder="Smith Realty Group" /></label>
-          </div>
-          <label>Email or phone<input type="text" name="contact" autocomplete="email" required placeholder="jane@smithrealty.com" /></label>
-          <label>What are you looking to build?<textarea name="message" rows="4" required placeholder="We need a new application and something that follows up with leads automatically&hellip;"></textarea></label>
-          <button class="btn btn-primary btn-lg" type="submit">Send message &rarr;</button>
-          <p class="fineprint">Opens your email app with the message addressed to me &mdash; nothing is stored on this site.</p>
-        </form>
-        <div class="contact-links reveal">
-          <a href="mailto:roman.proposal@gmail.com" id="contact-email">roman.proposal@gmail.com</a>
-          <span aria-hidden="true">&middot;</span>
-          <a href="https://github.com/rawmware" target="_blank" rel="noopener">GitHub</a>
-          <span aria-hidden="true">&middot;</span>
-          <a href="https://rawmware.com" target="_blank" rel="noopener">RawmWare</a>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="wrap footer-inner">
-      <p>&copy; <span id="year">2026</span> Roman&rsquo;s Proposal &middot; romansproposal.com</p>
-      <p class="footer-note">Designed &amp; built by Roman. No trackers, no cookies, no nonsense.</p>
+  <footer>
+    <div>
+      <span>Secure checkout by Stripe</span>
+      <span>Ships in 7–14 business days</span>
+      <a href="/shop/refunds.html">30-day returns</a>
+      <a href="/shop/shipping.html">Shipping info</a>
+      <a href="mailto:roman.proposal@gmail.com">roman.proposal@gmail.com</a>
     </div>
   </footer>
 
-  <script src="app.js"></script>
+  <script>
+    // Fallback list (the original products) so the page still sells if /api/catalog is down.
+    var FALLBACK = [{"id":"veggie-chopper-5in1","name":"5-in-1 Vegetable Chopper & Dicer","price":29.99,"category":"Kitchen","image":"/shop/assets/img/veggie-chopper-5in1.svg","buy":"https://buy.stripe.com/7sY28qaBDfZW6ff0Wz6EU04"},{"id":"electric-milk-frother","name":"Handheld Electric Milk Frother","price":19.99,"category":"Kitchen","image":"/shop/assets/img/electric-milk-frother.svg","buy":"https://buy.stripe.com/bJe8wOdNP152avv48L6EU05"},{"id":"silicone-stretch-lids","name":"Reusable Silicone Stretch Lids (6-Pack)","price":19.99,"category":"Kitchen","image":"/shop/assets/img/silicone-stretch-lids.svg","buy":"https://buy.stripe.com/fZueVcfVX296gTT6gT6EU06"},{"id":"oil-sprayer-mister","name":"Refillable Oil Sprayer Mister","price":16.99,"category":"Kitchen","image":"/shop/assets/img/oil-sprayer-mister.svg","buy":"https://buy.stripe.com/28EcN4cJL00Yavv9t56EU07"},{"id":"motion-sensor-led-lights","name":"Motion-Sensor LED Light Strips (USB Rechargeable)","price":24.99,"category":"Home","image":"/shop/assets/img/motion-sensor-led-lights.svg","buy":"https://buy.stripe.com/5kQaEW6ln4he0UVbBd6EU08"},{"id":"filtered-showerhead","name":"High-Pressure Filtered Showerhead","price":34.99,"category":"Home","image":"/shop/assets/img/filtered-showerhead.svg","buy":"https://buy.stripe.com/dRmdR88tv6pm333cFh6EU09"},{"id":"electric-spin-scrubber","name":"Cordless Electric Spin Scrubber","price":29.99,"category":"Home","image":"/shop/assets/img/electric-spin-scrubber.svg","buy":"https://buy.stripe.com/7sY14maBDcNKdHHeNp6EU0a"},{"id":"galaxy-star-projector","name":"Galaxy Star Projector Night Light","price":29.99,"category":"Home","image":"/shop/assets/img/galaxy-star-projector.svg","buy":"https://buy.stripe.com/14AdR8aBDbJG1YZ9t56EU0b"},{"id":"mini-car-vacuum","name":"Cordless Mini Car Vacuum","price":39.99,"category":"Car","image":"/shop/assets/img/mini-car-vacuum.svg","buy":"https://buy.stripe.com/6oU8wO4dfaFC47734H6EU0c"},{"id":"car-trash-can","name":"Car Trash Can with Lid","price":19.99,"category":"Car","image":"/shop/assets/img/car-trash-can.svg","buy":"https://buy.stripe.com/bJefZgfVX5liavv7kX6EU0d"},{"id":"headrest-car-hooks","name":"Backseat Headrest Bag Hooks (2-Pack)","price":14.99,"category":"Car","image":"/shop/assets/img/headrest-car-hooks.svg","buy":"https://buy.stripe.com/7sY7sKdNP3dacDDdJl6EU0e"},{"id":"pet-hair-remover-roller","name":"Reusable Pet Hair Remover Roller","price":17.99,"category":"Pet","image":"/shop/assets/img/pet-hair-remover-roller.svg","buy":"https://buy.stripe.com/bJe9AS39b6pm6ffax96EU0f"},{"id":"dog-lick-mat","name":"Dog Lick Mat Slow Feeder","price":14.99,"category":"Pet","image":"/shop/assets/img/dog-lick-mat.svg","buy":"https://buy.stripe.com/dRm00i4dfeVS6ffgVx6EU0g"},{"id":"cat-window-hammock","name":"Cat Window Hammock Perch","price":29.99,"category":"Pet","image":"/shop/assets/img/cat-window-hammock.svg","buy":"https://buy.stripe.com/14AaEW8tv3da6ff5cP6EU0h"},{"id":"gooseneck-phone-holder","name":"Gooseneck Phone Holder Clamp","price":24.99,"category":"Phone & Gadgets","image":"/shop/assets/img/gooseneck-phone-holder.svg","buy":"https://buy.stripe.com/9B6eVc4dfaFC0UVcFh6EU0i"},{"id":"sunset-projection-lamp","name":"Sunset Projection Lamp","price":22.99,"category":"Phone & Gadgets","image":"/shop/assets/img/sunset-projection-lamp.svg","buy":"https://buy.stripe.com/9B6eVc5hjeVS8nncFh6EU0j"},{"id":"magnetic-cable-clips","name":"Magnetic Cable Organizer Clips (5-Pack)","price":12.99,"category":"Phone & Gadgets","image":"/shop/assets/img/magnetic-cable-clips.svg","buy":"https://buy.stripe.com/eVq00i9xzdRO7jjeNp6EU0k"},{"id":"portable-usb-blender","name":"Portable USB-Rechargeable Blender","price":34.99,"category":"Kitchen","image":"/shop/assets/img/portable-usb-blender.svg","buy":"https://buy.stripe.com/9B63cu1134heeLL6gT6EU0l"}];
+
+    // The lineup is re-scraped daily by a cron at 09:00 UTC (it can fire any time in that hour),
+    // so the countdown targets 10:00 UTC, when the new lineup is guaranteed to be in.
+    function nextRefresh() {
+      var now = new Date();
+      var t = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 10, 0, 0);
+      if (t <= now.getTime()) t += 86400000;
+      return t;
+    }
+    var target = nextRefresh();
+    function tick() {
+      var ms = target - Date.now();
+      if (ms <= 0) { target = nextRefresh(); ms = target - Date.now(); }
+      var s = Math.floor(ms / 1000);
+      var txt = [Math.floor(s / 3600), Math.floor(s / 60) % 60, s % 60]
+        .map(function (n) { return String(n).padStart(2, "0"); }).join(":");
+      document.querySelectorAll("[data-timer]").forEach(function (el) { el.textContent = txt; });
+    }
+    tick();
+    setInterval(tick, 1000);
+
+    function esc(s) {
+      return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+        return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+      });
+    }
+
+    function render(products) {
+      products = products.slice().sort(function (a, b) { return a.price - b.price; });
+      document.getElementById("grid").innerHTML = products.map(function (p) {
+        return '<article class="card">' +
+          '<img src="' + esc(p.image) + '" alt="' + esc(p.name) + '" loading="lazy" referrerpolicy="no-referrer">' +
+          '<div class="body">' +
+            '<span class="cat">' + esc(p.category) + '</span>' +
+            '<span class="name">' + esc(p.name) + '</span>' +
+            '<span class="price">$' + Number(p.price).toFixed(2) + '</span>' +
+            '<span class="ship">Free US shipping</span>' +
+            '<a class="buy" href="' + esc(p.buy) + '">Buy now</a>' +
+          '</div></article>';
+      }).join("");
+    }
+
+    render(FALLBACK);
+    fetch("/api/catalog")
+      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function (d) { if (d.products && d.products.length) render(d.products); })
+      .catch(function () {});
+
+    var q = new URLSearchParams(location.search);
+    var msg = q.get("order") === "success"
+      ? ["", "Order confirmed! Your receipt is on its way to your email."]
+      : q.get("checkout") ? ["err", "That item just sold out or changed. Pick another one below."] : null;
+    if (msg) {
+      var n = document.getElementById("notice");
+      n.innerHTML = '<div class="' + msg[0] + '">' + msg[1] + "</div>";
+      n.hidden = false;
+    }
+  </script>
 </body>
 </html>

@@ -1,0 +1,146 @@
+[
+ {
+  "id": "veggie-chopper-5in1",
+  "name": "5-in-1 Vegetable Chopper & Dicer",
+  "price": 29.99,
+  "category": "Kitchen",
+  "image": "/shop/assets/img/veggie-chopper-5in1.svg",
+  "paymentLink": "https://buy.stripe.com/7sY28qaBDfZW6ff0Wz6EU04"
+ },
+ {
+  "id": "electric-milk-frother",
+  "name": "Handheld Electric Milk Frother",
+  "price": 19.99,
+  "category": "Kitchen",
+  "image": "/shop/assets/img/electric-milk-frother.svg",
+  "paymentLink": "https://buy.stripe.com/bJe8wOdNP152avv48L6EU05"
+ },
+ {
+  "id": "silicone-stretch-lids",
+  "name": "Reusable Silicone Stretch Lids (6-Pack)",
+  "price": 19.99,
+  "category": "Kitchen",
+  "image": "/shop/assets/img/silicone-stretch-lids.svg",
+  "paymentLink": "https://buy.stripe.com/fZueVcfVX296gTT6gT6EU06"
+ },
+ {
+  "id": "oil-sprayer-mister",
+  "name": "Refillable Oil Sprayer Mister",
+  "price": 16.99,
+  "category": "Kitchen",
+  "image": "/shop/assets/img/oil-sprayer-mister.svg",
+  "paymentLink": "https://buy.stripe.com/28EcN4cJL00Yavv9t56EU07"
+ },
+ {
+  "id": "motion-sensor-led-lights",
+  "name": "Motion-Sensor LED Light Strips (USB Rechargeable)",
+  "price": 24.99,
+  "category": "Home",
+  "image": "/shop/assets/img/motion-sensor-led-lights.svg",
+  "paymentLink": "https://buy.stripe.com/5kQaEW6ln4he0UVbBd6EU08"
+ },
+ {
+  "id": "filtered-showerhead",
+  "name": "High-Pressure Filtered Showerhead",
+  "price": 34.99,
+  "category": "Home",
+  "image": "/shop/assets/img/filtered-showerhead.svg",
+  "paymentLink": "https://buy.stripe.com/dRmdR88tv6pm333cFh6EU09"
+ },
+ {
+  "id": "electric-spin-scrubber",
+  "name": "Cordless Electric Spin Scrubber",
+  "price": 29.99,
+  "category": "Home",
+  "image": "/shop/assets/img/electric-spin-scrubber.svg",
+  "paymentLink": "https://buy.stripe.com/7sY14maBDcNKdHHeNp6EU0a"
+ },
+ {
+  "id": "galaxy-star-projector",
+  "name": "Galaxy Star Projector Night Light",
+  "price": 29.99,
+  "category": "Home",
+  "image": "/shop/assets/img/galaxy-star-projector.svg",
+  "paymentLink": "https://buy.stripe.com/14AdR8aBDbJG1YZ9t56EU0b"
+ },
+ {
+  "id": "mini-car-vacuum",
+  "name": "Cordless Mini Car Vacuum",
+  "price": 39.99,
+  "category": "Car",
+  "image": "/shop/assets/img/mini-car-vacuum.svg",
+  "paymentLink": "https://buy.stripe.com/6oU8wO4dfaFC47734H6EU0c"
+ },
+ {
+  "id": "car-trash-can",
+  "name": "Car Trash Can with Lid",
+  "price": 19.99,
+  "category": "Car",
+  "image": "/shop/assets/img/car-trash-can.svg",
+  "paymentLink": "https://buy.stripe.com/bJefZgfVX5liavv7kX6EU0d"
+ },
+ {
+  "id": "headrest-car-hooks",
+  "name": "Backseat Headrest Bag Hooks (2-Pack)",
+  "price": 14.99,
+  "category": "Car",
+  "image": "/shop/assets/img/headrest-car-hooks.svg",
+  "paymentLink": "https://buy.stripe.com/7sY7sKdNP3dacDDdJl6EU0e"
+ },
+ {
+  "id": "pet-hair-remover-roller",
+  "name": "Reusable Pet Hair Remover Roller",
+  "price": 17.99,
+  "category": "Pet",
+  "image": "/shop/assets/img/pet-hair-remover-roller.svg",
+  "paymentLink": "https://buy.stripe.com/bJe9AS39b6pm6ffax96EU0f"
+ },
+ {
+  "id": "dog-lick-mat",
+  "name": "Dog Lick Mat Slow Feeder",
+  "price": 14.99,
+  "category": "Pet",
+  "image": "/shop/assets/img/dog-lick-mat.svg",
+  "paymentLink": "https://buy.stripe.com/dRm00i4dfeVS6ffgVx6EU0g"
+ },
+ {
+  "id": "cat-window-hammock",
+  "name": "Cat Window Hammock Perch",
+  "price": 29.99,
+  "category": "Pet",
+  "image": "/shop/assets/img/cat-window-hammock.svg",
+  "paymentLink": "https://buy.stripe.com/14AaEW8tv3da6ff5cP6EU0h"
+ },
+ {
+  "id": "gooseneck-phone-holder",
+  "name": "Gooseneck Phone Holder Clamp",
+  "price": 24.99,
+  "category": "Phone & Gadgets",
+  "image": "/shop/assets/img/gooseneck-phone-holder.svg",
+  "paymentLink": "https://buy.stripe.com/9B6eVc4dfaFC0UVcFh6EU0i"
+ },
+ {
+  "id": "sunset-projection-lamp",
+  "name": "Sunset Projection Lamp",
+  "price": 22.99,
+  "category": "Phone & Gadgets",
+  "image": "/shop/assets/img/sunset-projection-lamp.svg",
+  "paymentLink": "https://buy.stripe.com/9B6eVc5hjeVS8nncFh6EU0j"
+ },
+ {
+  "id": "magnetic-cable-clips",
+  "name": "Magnetic Cable Organizer Clips (5-Pack)",
+  "price": 12.99,
+  "category": "Phone & Gadgets",
+  "image": "/shop/assets/img/magnetic-cable-clips.svg",
+  "paymentLink": "https://buy.stripe.com/eVq00i9xzdRO7jjeNp6EU0k"
+ },
+ {
+  "id": "portable-usb-blender",
+  "name": "Portable USB-Rechargeable Blender",
+  "price": 34.99,
+  "category": "Kitchen",
+  "image": "/shop/assets/img/portable-usb-blender.svg",
+  "paymentLink": "https://buy.stripe.com/9B63cu1134heeLL6gT6EU0l"
+ }
+]
